@@ -1,3 +1,93 @@
+:root {
+  font-size: 16px;
+  --background-color: #041E3F;
+  --title-text-color: #FEF2BF;
+  --green-button: #008000;
+  --red-button: #FF0000;
+  --yellow-button: #FFFF03;
+  --blue-button: #0603FF;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  border: border-box;
+}
+
+.pixelify-sans-font {
+  font-family: "Pixelify Sans", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+
 body {
-  background: #555;
+  background-color: var(--background-color);
+  height: 100vh;
+}
+
+.wrapper {
+  height: 100%;
+}
+
+.title {
+  height: 25%;
+}
+
+h1 {
+  color: var(--title-text-color);
+  height: 100%;
+  font-size: 5rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-wrapper {
+  height: 75%;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-container {
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  width: 550px;
+  height: 550px;
+}
+
+.btn {
+  display: inline-block;
+  height: 200px;
+  width: 200px;
+  border: 10px solid black;
+  border-radius: 20%;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.btn:hover {
+  transform: scale(1.1);
+}
+
+.green-btn {
+  background: var(--green-button);
+}
+
+.red-btn {
+  background: var(--red-button);
+}
+
+.yellow-btn {
+  background: var(--yellow-button);
+}
+
+.blue-btn {
+  background: var(--blue-button);
 }
