@@ -23,7 +23,6 @@
   font-style: normal;
 }
 
-
 body {
   background-color: var(--background-color);
   height: 100vh;
@@ -31,6 +30,56 @@ body {
 
 .wrapper {
   height: 100%;
+  position: relative;
+}
+
+dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 75%;
+  width: 50%;
+  padding: 20px;
+  background: rgb(85, 85, 85, 0.95);
+  border: 10px solid black;
+  border-radius: 40px;
+}
+
+dialog > h3 {
+  color: var(--title-text-color);
+  font-size: 5rem;
+  padding: 20px;
+}
+
+dialog > p {
+  color: var(--title-text-color);
+  font-size: 4rem;
+  padding: 50px;
+  line-height: 120%;
+}
+
+dialog > button {
+  position: absolute;
+  bottom: 40px;
+  right: 45px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+dialog > button:focus {
+  outline: none;
+}
+
+dialog > button:hover {
+  transform: scale(1.1);
+}
+
+dialog > button > i {
+  font-size: 5rem;  
 }
 
 .title {
@@ -47,10 +96,16 @@ h1 {
   align-items: center;
 }
 
+h2 {
+  color: var(--title-text-color);
+  font-size: 5rem;
+}
+
 .btn-wrapper {
-  height: 75%;
+  height: 49%;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .btn-container {
@@ -90,6 +145,13 @@ h1 {
 
 .blue-btn {
   background: var(--blue-button);
+}
+
+.high-score {
+  height: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .highlight {

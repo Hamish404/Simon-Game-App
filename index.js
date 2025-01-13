@@ -1,4 +1,7 @@
 const title = $('h1');
+const scoreElement = $('h2');
+const modal = $('dialog');
+const tickButton = $('.tick-button');
 const greenButton = $('.green-btn');
 const redButton = $('.red-btn');
 const yellowButton = $('.yellow-btn');
@@ -8,13 +11,20 @@ let levelCounter = 1;
 let computerMoves = [];
 let playerMoves = [];
 let intervalId;
+let isClickable = false;
+let score = JSON.parse(localStorage.getItem('score')) || 0;
+let highScore = score;
+
+hideScore();
+updateScore();
+ifNewGame();
 
 $(document).on('keydown', e => {
   if (e.key === 'a' && levelCounter === 1) {
+    isClickable = true;
+    removeEventListener(document);
     resetGame();
-    title.text(`Level ${levelCounter}`);
     computerTurn();
-    console.log('I was executed');
   }
 });
 
@@ -22,25 +32,29 @@ function playGame() {
   if (computerMoves.length !== playerMoves.length && movesAreSame(computerMoves, playerMoves)) {
     return;
   } else if (movesAreSame(computerMoves, playerMoves)) {
-    levelCounter++
-    title.text(`Level ${levelCounter}`);
+    updateLevel();
+    updateScore();
     computerTurn();
     playerTurn();
   } else {
     title.text('Game Over!');
     playSound('Game Over!');
+    showScore();
     $('body').css('background-color', 'red');
+    isClickable = false;
+
     setTimeout(() => {
       $('body').css('background-color', '#041E3F');
     }, 200);
+
     setTimeout(() => {
       title.text('Press Any Key to Restart');
       $(document).on('keydown', () => {
+        updateLevel();
         resetGame();
-        title.text(`Level ${levelCounter}`);
         computerTurn();
-        $(document).off('keydown');
-        console.log('here');
+        removeEventListener(document);
+        isClickable = true;
       })
     }, 1500);
   }
@@ -49,40 +63,38 @@ function playGame() {
 function computerTurn() {
   setTimeout(() => {
     const result = Math.floor(Math.random() * 4);
+    playSound(buttons[result]);
     buttons[result].fadeOut(100);
     buttons[result].fadeIn(100);
     computerMoves.push(result);
-    console.log(`Computer Moves: ${computerMoves}`);
   }, 500)
 }
 
 $('.btn').on('click', e => {
   const clickedButton = $(e.currentTarget);
-
+  if (!isClickable) {
+    return;
+  }
   if (clickedButton.is(greenButton)) {
     playerMoves.push(0);
-    console.log(`Player Moves: ${playerMoves}`);
     playSound(greenButton);
     addHighlight(greenButton);
     playGame();
   };
   if (clickedButton.is(redButton)) {
     playerMoves.push(1);
-    console.log(`Player Moves: ${playerMoves}`);
     playSound(redButton);
     addHighlight(redButton);
     playGame();
   };
   if (clickedButton.is(yellowButton)) {
     playerMoves.push(2);
-    console.log(`Player Moves: ${playerMoves}`);
     playSound(yellowButton);
     addHighlight(yellowButton);
     playGame();
   };
   if (clickedButton.is(blueButton)) {
     playerMoves.push(3);
-    console.log(`Player Moves: ${playerMoves}`);
     playSound(blueButton);
     addHighlight(blueButton);
     playGame();
@@ -106,6 +118,41 @@ function resetGame() {
   levelCounter = 1;
   computerMoves.length = 0;
   playerMoves.length = 0;
+  title.text(`Level ${levelCounter}`);
+  hideScore();
+}
+
+function updateScore() {
+  if (levelCounter > highScore) {
+    highScore = levelCounter;
+    localStorage.setItem('score', JSON.stringify(highScore));
+  }
+}
+
+function showScore() {
+  scoreElement.text(`High Score: ${highScore}`);
+  scoreElement.css('visibility', 'visible');
+}
+
+function hideScore() {
+  scoreElement.css('visibility', 'hidden');
+}
+
+function updateLevel() {
+  levelCounter++
+  title.text(`Level ${levelCounter}`);
+}
+
+function removeEventListener(element) {
+  $(element).off('keydown');
+}
+
+function addHighlight(button) {
+  button.addClass('highlight');
+
+  setTimeout(() => {
+    button.removeClass('highlight');
+  }, 150);
 }
 
 function playSound(type) {
@@ -138,10 +185,19 @@ function playSound(type) {
   }
 }
 
-function addHighlight(button) {
-  button.addClass('highlight');
-
-  setTimeout(() => {
-    button.removeClass('highlight');
-  }, 200);
+function ifNewGame() {
+  if (highScore === 1) {
+    console.log('yes');
+    modal[0].showModal();
+    tickButton.on('click', () => {
+      modal[0].close();
+    })
+  }
 }
+
+
+// To do:
+// Simplify code - Ask ChatGPT of what can be improved upon and further use of jQuery
+
+// Implement i button for instructions on how to play
+// Add tablet and phone functionality including media queries and touch support to begin game
