@@ -6,6 +6,7 @@ const greenButton = $('.green-btn');
 const redButton = $('.red-btn');
 const yellowButton = $('.yellow-btn');
 const blueButton = $('.blue-btn');
+const howToButton = $('.fa-question');
 const buttons = [greenButton, redButton, yellowButton, blueButton];
 let levelCounter = 1;
 let computerMoves = [];
@@ -15,18 +16,10 @@ let isClickable = false;
 let score = JSON.parse(localStorage.getItem('score')) || 0;
 let highScore = score;
 
+setupEventListeners();
 hideScore();
 updateScore();
 ifNewGame();
-
-$(document).on('keydown', e => {
-  if (e.key === 'a' && levelCounter === 1) {
-    isClickable = true;
-    removeEventListener(document);
-    resetGame();
-    computerTurn();
-  }
-});
 
 function playGame() {
   if (computerMoves.length !== playerMoves.length && movesAreSame(computerMoves, playerMoves)) {
@@ -143,16 +136,45 @@ function updateLevel() {
   title.text(`Level ${levelCounter}`);
 }
 
-function removeEventListener(element) {
-  $(element).off('keydown');
-}
-
 function addHighlight(button) {
   button.addClass('highlight');
 
   setTimeout(() => {
     button.removeClass('highlight');
   }, 150);
+}
+
+function setupEventListeners() {
+  $(document).on('keydown', e => {
+    if (e.key === 'a' && levelCounter === 1) {
+      isClickable = true;
+      removeEventListener(document);
+      resetGame();
+      computerTurn();
+    }
+  });
+
+  $(document).on('touchstart', e => {
+    if (e.key === 'a' && levelCounter === 1) {
+      isClickable = true;
+      removeEventListener(document);
+      resetGame();
+      computerTurn();
+    }
+  });
+
+  tickButton.on('click', () => {
+    modal[0].close();
+  });
+
+  $(howToButton).on('click', e => {
+    modal[0].show();
+  })
+}
+
+function removeEventListener(element) {
+  $(element).off('keydown');
+  $(element).off('touchstart');
 }
 
 function playSound(type) {
@@ -187,17 +209,9 @@ function playSound(type) {
 
 function ifNewGame() {
   if (highScore === 1) {
-    console.log('yes');
     modal[0].showModal();
-    tickButton.on('click', () => {
-      modal[0].close();
-    })
   }
 }
 
-
 // To do:
 // Simplify code - Ask ChatGPT of what can be improved upon and further use of jQuery
-
-// Implement i button for instructions on how to play
-// Add tablet and phone functionality including media queries and touch support to begin game
