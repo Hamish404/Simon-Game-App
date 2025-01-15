@@ -23,7 +23,6 @@
   font-style: normal;
 }
 
-
 body {
   background-color: var(--background-color);
   height: 100vh;
@@ -31,6 +30,56 @@ body {
 
 .wrapper {
   height: 100%;
+  position: relative;
+}
+
+dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 75%;
+  width: 50%;
+  padding: 20px;
+  background: rgb(85, 85, 85, 0.95);
+  border: 10px solid black;
+  border-radius: 40px;
+}
+
+dialog > h3 {
+  color: var(--title-text-color);
+  font-size: 3.5rem;
+  padding: 20px;
+}
+
+dialog > p {
+  color: var(--title-text-color);
+  font-size: 2.5rem;
+  padding: 50px;
+  line-height: 120%;
+}
+
+dialog > button {
+  position: absolute;
+  bottom: 40px;
+  right: 45px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+dialog > button:focus {
+  outline: none;
+}
+
+dialog > button:hover {
+  transform: scale(1.2);
+}
+
+dialog > button > i {
+  font-size: 5rem;  
 }
 
 .title {
@@ -47,10 +96,16 @@ h1 {
   align-items: center;
 }
 
+h2 {
+  color: var(--title-text-color);
+  font-size: 5rem;
+}
+
 .btn-wrapper {
-  height: 75%;
+  height: 49%;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .btn-container {
@@ -64,8 +119,8 @@ h1 {
 
 .btn {
   display: inline-block;
-  height: 200px;
-  width: 200px;
+  width: 75%;
+  aspect-ratio: 1;
   border: 10px solid black;
   border-radius: 20%;
   cursor: pointer;
@@ -90,4 +145,332 @@ h1 {
 
 .blue-btn {
   background: var(--blue-button);
+}
+
+.high-score {
+  height: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fa-question {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  font-size: 5rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.fa-question:hover {
+  transform: scale(1.2);
+}
+
+.highlight {
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 50px rgba(255, 255, 255, 0.8);
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.container {
+  max-width: 1536px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+/* 2xl */
+@media (max-width: 1536px) and (max-height: 1220px) {
+  .container {
+    max-width: 1280px;
+  }
+
+  dialog > h3 {
+    font-size: 3.5rem;
+  }
+
+  dialog > p {
+    font-size: 2.2rem;
+  }
+
+  h1, h2 {
+    font-size: 4rem;
+  }
+
+  .btn-container {
+    height: 400px;
+    width: 400px;
+  }
+}
+
+/* xl */
+@media (max-width: 1280px) and (max-height: 1220px) {
+  .container {
+    max-width: 1024px;
+  }
+
+  dialog > h3 {
+    font-size: 3rem;
+  }
+
+  dialog > p {
+    font-size: 2.2rem;
+  }
+}
+
+/* lg */
+@media (max-width: 1024px) and (max-height: 1220px) {
+  .container {
+    max-width: 768px;
+  }
+
+  dialog {
+    height: 75%;
+    width: 75%;
+  }
+
+  dialog > h3 {
+    font-size: 3rem;
+  }
+
+  dialog > p {
+    font-size: 2.2rem;
+    padding: 20px;
+  }
+
+  dialog > button > i {
+    font-size: 4rem;
+  }
+
+  .fa-question {
+    font-size: 4rem;
+  }
+}
+
+/* md */
+@media (max-width: 768px) and (max-height: 1220px) {
+  .container {
+    max-width: 640px;
+  }
+
+  h1, h2 {
+    font-size: 3.5rem;
+  }
+
+  dialog > p {
+    font-size: 2.1rem;
+    padding: 10px;
+  }
+}
+
+/* sm */
+@media (max-width: 640px) and (max-height: 1220px) {
+  .container {
+    max-width: 475px;
+  }
+  
+  h1, h2 {
+    font-size: 2.8rem;
+  }
+
+  dialog > h3 {
+    font-size: 2.3rem;
+  }
+
+  dialog > p {
+    font-size: 2rem;
+  }
+
+  dialog > button > i {
+    font-size: 3rem;
+  }
+
+  .fa-question {
+    font-size: 3rem;
+  }
+}
+
+/* xs */
+@media (max-width: 475px) and (max-height: 1220px) {
+  .container {
+    width: 100%;
+  }
+
+  h1, h2 {
+    font-size: 2.8rem;
+  }
+
+  dialog > h3 {
+    font-size: 2.5rem;
+  }
+
+  dialog > p {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 1024px) and (max-height: 1400px) {
+  .container {
+    max-width: 768px;
+  }
+
+  dialog {
+    height: 75%;
+    width: 75%;
+  }
+
+  h1, h2 {
+    font-size: 4.5rem;
+  }
+
+  dialog > button > i {
+    font-size: 4rem;
+  }
+
+  .fa-question {
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 768px) and (max-height: 1400px) {
+  .container {
+    max-width: 640px;
+  }
+
+  h1, h2 {
+    font-size: 3.5rem;
+  }
+
+  dialog {
+    height: 60%;
+    width: 80%;
+  }
+
+  dialog > h3 {
+    font-size: 3rem;
+  }
+
+  dialog > p {
+    font-size: 2.1rem;
+    padding: 10px;
+  }
+
+  dialog > button > i {
+    font-size: 3rem;
+  }
+
+  .fa-question {
+    font-size: 3rem;
+  }
+}
+
+/* sm */
+@media (max-width: 640px) and (max-height: 1400px) {
+  .container {
+    max-width: 475px;
+  }
+  
+  h1, h2 {
+    font-size: 3.3rem;
+  }
+
+  dialog > h3 {
+    font-size: 2.3rem;
+  }
+
+  dialog > p {
+    font-size: 2rem;
+  }
+}
+
+/* xs */
+@media (max-width: 475px) and (max-height: 1400px) {
+  .container {
+    width: 100%;
+  }
+
+  h1, h2 {
+    font-size: 2.5rem;
+  }
+
+  dialog > h3 {
+    font-size: 2.5rem;
+  }
+
+  dialog > p {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) and (max-height: 860px) {
+  .container {
+    max-width: 640px;
+  }
+
+  h1, h2 {
+    font-size: 3.5rem;
+  }
+
+  dialog > h3 {
+    font-size: 2.5rem;
+  }
+
+  dialog > p {
+    font-size: 1.6rem;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 640px) and (max-height: 860px) {
+  .container {
+    max-width: 475px;
+  }
+  
+  h1, h2 {
+    font-size: 2.6rem;
+  }
+
+  dialog {
+    height: 50%;
+  }
+
+  dialog > h3 {
+    font-size: 2rem;
+  }
+
+  dialog > p {
+    font-size: 1.4rem;
+  }
+
+  dialog > button > i {
+    font-size: 3rem;
+  }
+
+  .fa-question {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 475px) and (max-height: 860px) {
+  .container {
+    width: 100%;
+  }
+  
+  dialog {
+    height: 65%;
+  }
+
+  h1, h2 {
+    font-size: 2.5rem;
+  }
+
+  dialog > h3 {
+    font-size: 1.7rem;
+  }
+
+  dialog > p {
+    font-size: 1.5rem;
+  }
 }
