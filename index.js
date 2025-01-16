@@ -50,7 +50,6 @@ function playGame() {
             resetGame();
             computerTurn();
             removeEventListener(document);
-            isClickable = true;
           }
         });
       } else {
