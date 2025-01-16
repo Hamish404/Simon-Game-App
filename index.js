@@ -12,6 +12,7 @@ let levelCounter = 1;
 let computerMoves = [];
 let playerMoves = [];
 let isClickable = false;
+let newHighScore = false;
 let score = JSON.parse(localStorage.getItem('score')) || 0;
 let highScore = score;
 
@@ -32,7 +33,6 @@ function playGame() {
   } else {
     title.text('Game Over!');
     playSound('Game Over!');
-    showScore();
     $('body').css('background-color', 'red');
     isClickable = false;
 
@@ -41,26 +41,24 @@ function playGame() {
     }, 200);
 
     setTimeout(() => {
-      if (window.matchMedia("(max-width: 900px)").matches) {
-        displayTouchScreenText('Restart');
-        $(document).on('touchstart', e => {
-          if (e.target !== $('.fa-check').get(0) && e.target !== howToButton.get(0)) {
-            e.preventDefault()
-            updateLevel();
-            resetGame();
-            computerTurn();
-            removeEventListener(document);
-          }
-        });
+      if (newHighScore) {
+        playSound('High Score!');
+
+        setTimeout(() => {
+          $('body').css('background-color', 'lime');
+          title.text('New High Score!')
+        }, 150);
+  
+        setTimeout(() => {
+          $('body').css('background-color', '#041E3F');
+          restartGameSetup();
+          setTimeout(() => {
+            showScore();
+          }, 1000);
+        }, 2000);
+
       } else {
-        title.text('Press Any Key to Restart');
-        $(document).on('keydown', () => {
-          updateLevel();
-          resetGame();
-          computerTurn();
-          removeEventListener(document);
-          isClickable = true;
-        })
+        restartGameSetup();
       }
     }, 1500);
   }
@@ -70,8 +68,11 @@ function computerTurn() {
   setTimeout(() => {
     const result = Math.floor(Math.random() * 4);
     playSound(buttons[result]);
-    buttons[result].fadeOut(100);
-    buttons[result].fadeIn(100);
+    brightenButton(buttons[result]);
+    setTimeout(() => {
+      buttons[result].fadeOut(100);
+      buttons[result].fadeIn(100);
+    }, 100);
     computerMoves.push(result);
     isClickable = true;
   }, 500)
@@ -85,25 +86,25 @@ $('.btn').on('click', e => {
   if (clickedButton.is(greenButton)) {
     playerMoves.push(0);
     playSound(greenButton);
-    addHighlight(greenButton);
+    addBackgroundHighlight(greenButton);
     playGame();
   };
   if (clickedButton.is(redButton)) {
     playerMoves.push(1);
     playSound(redButton);
-    addHighlight(redButton);
+    addBackgroundHighlight(redButton);
     playGame();
   };
   if (clickedButton.is(yellowButton)) {
     playerMoves.push(2);
     playSound(yellowButton);
-    addHighlight(yellowButton);
+    addBackgroundHighlight(yellowButton);
     playGame();
   };
   if (clickedButton.is(blueButton)) {
     playerMoves.push(3);
     playSound(blueButton);
-    addHighlight(blueButton);
+    addBackgroundHighlight(blueButton);
     playGame();
   };
 });
@@ -131,8 +132,11 @@ function resetGame() {
 
 function updateScore() {
   if (levelCounter > highScore) {
+    newHighScore = true;
     highScore = levelCounter;
     localStorage.setItem('score', JSON.stringify(highScore));
+  } else {
+    newHighScore = false;
   }
 }
 
@@ -150,7 +154,15 @@ function updateLevel() {
   title.text(`Level ${levelCounter}`);
 }
 
-function addHighlight(button) {
+function brightenButton(button) {
+  button.addClass('brighten');
+
+  setTimeout(() => {
+    button.removeClass('brighten');
+  }, 150);
+}
+
+function addBackgroundHighlight(button) {
   button.addClass('highlight');
 
   setTimeout(() => {
@@ -231,6 +243,34 @@ function playSound(type) {
       audio5.volume = 0.5;
       audio5.play();
       break;
+    case 'High Score!':
+      const audio6 = new Audio('sounds/Success Sound Effect.mp3');
+      audio6.play();
+      break;
+  }
+}
+
+function restartGameSetup() {
+  if (window.matchMedia("(max-width: 900px)").matches) {
+    displayTouchScreenText('Restart');
+    $(document).on('touchstart', e => {
+      if (e.target !== $('.fa-check').get(0) && e.target !== howToButton.get(0)) {
+        e.preventDefault()
+        updateLevel();
+        resetGame();
+        computerTurn();
+        removeEventListener(document);
+      }
+    });
+  } else {
+    title.text('Press Any Key to Restart');
+    $(document).on('keydown', () => {
+      updateLevel();
+      resetGame();
+      computerTurn();
+      removeEventListener(document);
+      isClickable = true;
+    })
   }
 }
 
@@ -239,9 +279,5 @@ function ifNewGame() {
     modal[0].showModal();
   }
 }
-
-// To do:
-
-// Height broken on s22 for modal, investigate.
 
 // Simplify code - Ask ChatGPT of what can be improved upon and further use of jQuery
