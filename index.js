@@ -54,11 +54,14 @@ function playGame() {
           restartGameSetup();
           setTimeout(() => {
             showScore();
-          }, 1000);
+          }, 800);
         }, 2000);
 
       } else {
         restartGameSetup();
+        setTimeout(() => {
+          showScore();
+        }, 800);
       }
     }, 1500);
   }
@@ -120,14 +123,6 @@ function movesAreSame(computerMoves, playerMoves) {
     }
   }
   return true;
-}
-
-function resetGame() {
-  levelCounter = 1;
-  computerMoves.length = 0;
-  playerMoves.length = 0;
-  title.text(`Level ${levelCounter}`);
-  hideScore();
 }
 
 function updateScore() {
@@ -250,11 +245,19 @@ function playSound(type) {
   }
 }
 
+function resetGame() {
+  levelCounter = 1;
+  computerMoves.length = 0;
+  playerMoves.length = 0;
+  title.text(`Level ${levelCounter}`);
+  hideScore();
+}
+
 function restartGameSetup() {
   if (window.matchMedia("(max-width: 900px)").matches) {
     displayTouchScreenText('Restart');
     $(document).on('touchstart', e => {
-      if (e.target !== $('.fa-check').get(0) && e.target !== howToButton.get(0)) {
+      if (!modal[0].open && e.target !== $('.fa-check').get(0) && e.target !== howToButton.get(0)) {
         e.preventDefault()
         updateLevel();
         resetGame();
@@ -279,5 +282,7 @@ function ifNewGame() {
     modal[0].showModal();
   }
 }
+
+// Question mark screen enables gameplay when open and clicked, but not when first opened
 
 // Simplify code - Ask ChatGPT of what can be improved upon and further use of jQuery
