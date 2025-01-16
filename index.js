@@ -43,13 +43,16 @@ function playGame() {
     setTimeout(() => {
       if (window.matchMedia("(max-width: 900px)").matches) {
         displayTouchScreenText('Restart');
-        $(document).on('touchstart', '.tick-button', e => {
-          e.preventDefault()
-          updateLevel();
-          resetGame();
-          computerTurn();
-          removeEventListener(document);
-          isClickable = true;
+        $(document).on('touchstart', e => {
+          if (e.target !== tickButton.get(0) && e.target !== howToButton.get(0)) {
+            e.preventDefault()
+            updateLevel();
+            resetGame();
+            computerTurn();
+            removeEventListener(document);
+            isClickable = true;
+            console.log('I was clicked');
+          }
         });
       } else {
         title.text('Press Any Key to Restart');
@@ -166,19 +169,11 @@ function setupEventListeners() {
     }
   });
 
-  $(document).on('touchstart', '.tick-button', e => {
-    e.preventDefault()
-    isClickable = true;
-    removeEventListener(document);
-    resetGame();
-    computerTurn();
-  });
-
   tickButton.on('click', () => {
     modal[0].close();
   });
 
-  $(howToButton).on('click', e => {
+  $(howToButton).on('click', () => {
     modal[0].show();
   })
 }
