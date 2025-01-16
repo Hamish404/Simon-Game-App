@@ -44,14 +44,13 @@ function playGame() {
       if (window.matchMedia("(max-width: 900px)").matches) {
         displayTouchScreenText('Restart');
         $(document).on('touchstart', e => {
-          if (e.target !== tickButton.get(0) && e.target !== howToButton.get(0)) {
+          if (e.target !== $('.fa-check').get(0) && e.target !== howToButton.get(0)) {
             e.preventDefault()
             updateLevel();
             resetGame();
             computerTurn();
             removeEventListener(document);
             isClickable = true;
-            console.log('I was clicked');
           }
         });
       } else {
@@ -75,6 +74,7 @@ function computerTurn() {
     buttons[result].fadeOut(100);
     buttons[result].fadeIn(100);
     computerMoves.push(result);
+    isClickable = true;
   }, 500)
 }
 
@@ -166,6 +166,16 @@ function setupEventListeners() {
       removeEventListener(document);
       resetGame();
       computerTurn();
+    }
+  });
+
+  $(document).on('touchstart', e => {
+    if (e.target !== tickButton.get(0) && e.target !== howToButton.get(0)) {
+      e.preventDefault()
+      updateLevel();
+      resetGame();
+      computerTurn();
+      removeEventListener(document);
     }
   });
 
