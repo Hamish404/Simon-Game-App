@@ -155,12 +155,10 @@ function setupEventListeners() {
   });
 
   $(document).on('touchstart', e => {
-    if (e.key === 'a' && levelCounter === 1) {
-      isClickable = true;
-      removeEventListener(document);
-      resetGame();
-      computerTurn();
-    }
+    isClickable = true;
+    removeEventListener(document);
+    resetGame();
+    computerTurn();
   });
 
   tickButton.on('click', () => {
