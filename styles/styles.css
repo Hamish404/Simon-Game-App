@@ -474,6 +474,11 @@ h2 {
     height: 300px;
   }
 
+  .title {
+    height: 15%;
+    padding-top: 20px;
+  }
+
   .high-score {
     height: 15%;
   }
@@ -487,6 +492,6 @@ h2 {
   }
 
   dialog > p {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 }
