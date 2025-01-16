@@ -151,12 +151,13 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .fa-question {
   position: absolute;
-  bottom: 50px;
-  right: 50px;
+  bottom: 10px;
+  right: 10px;
   font-size: 5rem;
   cursor: pointer;
   transition: transform 0.3s ease;
@@ -438,11 +439,6 @@ h2 {
     font-size: 2.6rem;
   }
 
-  .btn-container {
-    width: 300px;
-    height: 300px;
-  }
-
   dialog {
     height: 50%;
   }
@@ -466,11 +462,20 @@ h2 {
 
 @media (max-width: 475px) and (max-height: 860px) {
   .container {
-    width: 100%;
+    width: 340px;
   }
   
   dialog {
     height: 65%;
+  }
+
+  .btn-container {
+    width: 300px;
+    height: 300px;
+  }
+
+  .high-score {
+    height: 15%;
   }
 
   h1, h2 {
