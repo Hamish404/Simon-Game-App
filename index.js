@@ -11,11 +11,11 @@ const buttons = [greenButton, redButton, yellowButton, blueButton];
 let levelCounter = 1;
 let computerMoves = [];
 let playerMoves = [];
-let intervalId;
 let isClickable = false;
 let score = JSON.parse(localStorage.getItem('score')) || 0;
 let highScore = score;
 
+textForTouchScreensOnPageLoad();
 setupEventListeners();
 hideScore();
 updateScore();
@@ -41,14 +41,26 @@ function playGame() {
     }, 200);
 
     setTimeout(() => {
-      title.text('Press Any Key to Restart');
-      $(document).on('keydown', () => {
-        updateLevel();
-        resetGame();
-        computerTurn();
-        removeEventListener(document);
-        isClickable = true;
-      })
+      if (window.matchMedia("(max-width: 900px)").matches) {
+        displayTouchScreenText('Restart');
+        $(document).on('touchstart', '.tick-button', e => {
+          e.preventDefault()
+          updateLevel();
+          resetGame();
+          computerTurn();
+          removeEventListener(document);
+          isClickable = true;
+        });
+      } else {
+        title.text('Press Any Key to Restart');
+        $(document).on('keydown', () => {
+          updateLevel();
+          resetGame();
+          computerTurn();
+          removeEventListener(document);
+          isClickable = true;
+        })
+      }
     }, 1500);
   }
 }
@@ -154,7 +166,8 @@ function setupEventListeners() {
     }
   });
 
-  $(document).on('touchstart', e => {
+  $(document).on('touchstart', '.tick-button', e => {
+    e.preventDefault()
     isClickable = true;
     removeEventListener(document);
     resetGame();
@@ -173,6 +186,18 @@ function setupEventListeners() {
 function removeEventListener(element) {
   $(element).off('keydown');
   $(element).off('touchstart');
+}
+
+function textForTouchScreensOnPageLoad() {
+  $(window).on('load', () => {
+    if (window.matchMedia("(max-width: 900px)").matches) {
+      displayTouchScreenText('Start');
+    }  
+  })
+}
+
+function displayTouchScreenText(startType) {
+  title.text(`Press Anywhere to ${startType}`);
 }
 
 function playSound(type) {
@@ -212,4 +237,7 @@ function ifNewGame() {
 }
 
 // To do:
+
+// Height broken on s22 for modal, investigate.
+
 // Simplify code - Ask ChatGPT of what can be improved upon and further use of jQuery
