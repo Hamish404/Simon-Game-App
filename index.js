@@ -169,7 +169,7 @@ function setupEventListeners() {
   });
 
   $(document).on('touchstart', e => {
-    if (e.target !== tickButton.get(0) && e.target !== howToButton.get(0)) {
+    if (!modal[0].open && e.target !== tickButton.get(0) && e.target !== howToButton.get(0)) {
       e.preventDefault()
       updateLevel();
       resetGame();
