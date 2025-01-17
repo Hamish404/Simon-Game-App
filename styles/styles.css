@@ -185,6 +185,13 @@ h2 {
   padding-right: 0.5rem;
 }
 
+.no-hover .btn:hover,
+.no-hover dialog > button:hover,
+.no-hover .fa-question:hover{
+  background-color: inherit;
+  transform: none;
+}
+
 .pixelify-sans-font {
   font-family: "Pixelify Sans", serif;
   font-optical-sizing: auto;
