@@ -166,6 +166,11 @@ function addBackgroundHighlight(button) {
 }
 
 function setupEventListeners() {
+  $(document).on('touchstart', function () {
+    $('body').addClass('no-hover');
+    $(document).off('touchstart');
+  });
+
   $(document).on('keydown', e => {
     if (e.key === 'a' && levelCounter === 1) {
       isClickable = true;
@@ -283,6 +288,7 @@ function ifNewGame() {
   }
 }
 
+// issue with high score display on non high score iterations
 // Question mark screen enables gameplay when open and clicked, but not when first opened
 
 // Simplify code - Ask ChatGPT of what can be improved upon and further use of jQuery
