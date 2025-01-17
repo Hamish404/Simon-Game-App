@@ -150,6 +150,7 @@ function updateLevel() {
 }
 
 function brightenButton(button) {
+  buttons.forEach(btn => btn.removeClass('brighten'));
   button.addClass('brighten');
 
   setTimeout(() => {
@@ -158,6 +159,7 @@ function brightenButton(button) {
 }
 
 function addBackgroundHighlight(button) {
+  buttons.forEach(btn => btn.removeClass('highlight'));
   button.addClass('highlight');
 
   setTimeout(() => {
@@ -166,6 +168,8 @@ function addBackgroundHighlight(button) {
 }
 
 function setupEventListeners() {
+  $(document).off('touchstart keydown');
+
   $(document).on('touchstart', function () {
     $('body').addClass('no-hover');
   });
@@ -180,6 +184,7 @@ function setupEventListeners() {
   });
 
   $(document).on('touchstart', e => {
+    e.preventDefault();
     if (!modal[0].open && e.target !== tickButton.get(0) && e.target !== howToButton.get(0)) {
       e.preventDefault()
       updateLevel();
