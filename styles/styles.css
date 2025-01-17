@@ -130,6 +130,10 @@ h2 {
   transform: scale(1.1);
 }
 
+.no-hover .btn {
+  transform: none;
+}
+
 .green-btn {
   background: var(--green-button);
 }
@@ -183,13 +187,6 @@ h2 {
   margin-right: auto;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-}
-
-.no-hover .btn:hover,
-.no-hover dialog > button:hover,
-.no-hover .fa-question:hover{
-  background-color: inherit;
-  transform: none;
 }
 
 .pixelify-sans-font {
