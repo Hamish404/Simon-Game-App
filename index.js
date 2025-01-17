@@ -170,7 +170,7 @@ function addBackgroundHighlight(button) {
 function setupEventListeners() {
   $(document).off('touchstart keydown');
 
-  $(document).on('touchstart', function () {
+  $(document).on('touchstart', () => {
     $('body').addClass('no-hover');
   });
 
