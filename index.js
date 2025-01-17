@@ -22,6 +22,84 @@ hideScore();
 updateScore();
 ifNewGame();
 
+function setupEventListeners() {
+  $(document).off('touchstart keydown');
+
+  $(document).on('touchstart', () => {
+    $('body').addClass('no-hover');
+  });
+
+  $(document).on('keydown', e => {
+    if (e.key === 'a' && levelCounter === 1) {
+      isClickable = true;
+      removeEventListener(document);
+      resetGame();
+      computerTurn();
+    }
+  });
+
+  $(document).on('touchstart', e => {
+    e.preventDefault();
+    if (!modal[0].open && e.target !== tickButton.get(0) && e.target !== howToButton.get(0)) {
+      e.preventDefault()
+      updateLevel();
+      resetGame();
+      computerTurn();
+      removeEventListener(document);
+    }
+  });
+
+  $('.btn').on('click', e => {
+    const clickedButton = $(e.currentTarget);
+    if (!isClickable) {
+      return;
+    }
+    if (clickedButton.is(greenButton)) {
+      playerMoves.push(0);
+      playSound(greenButton);
+      addBackgroundHighlight(greenButton);
+      playGame();
+    };
+    if (clickedButton.is(redButton)) {
+      playerMoves.push(1);
+      playSound(redButton);
+      addBackgroundHighlight(redButton);
+      playGame();
+    };
+    if (clickedButton.is(yellowButton)) {
+      playerMoves.push(2);
+      playSound(yellowButton);
+      addBackgroundHighlight(yellowButton);
+      playGame();
+    };
+    if (clickedButton.is(blueButton)) {
+      playerMoves.push(3);
+      playSound(blueButton);
+      addBackgroundHighlight(blueButton);
+      playGame();
+    };
+  });
+
+  tickButton.on('click', () => {
+    modal[0].close();
+  });
+
+  $(howToButton).on('click', () => {
+    modal[0].show();
+  })
+}
+
+function removeEventListener(element) {
+  $(element).off('keydown');
+  $(element).off('touchstart');
+}
+
+function ifNewGame() {
+  if (highScore === 1) {
+    modal[0].showModal();
+  }
+}
+
 function playGame() {
   if (computerMoves.length !== playerMoves.length && movesAreSame(computerMoves, playerMoves)) {
     return;
@@ -42,6 +120,7 @@ function playGame() {
 
     setTimeout(() => {
       if (newHighScore) {
+        newHighScore = false;
         playSound('High Score!');
 
         setTimeout(() => {
@@ -82,37 +161,6 @@ function computerTurn() {
   }, 500)
 }
 
-$('.btn').on('click', e => {
-  const clickedButton = $(e.currentTarget);
-  if (!isClickable) {
-    return;
-  }
-  if (clickedButton.is(greenButton)) {
-    playerMoves.push(0);
-    playSound(greenButton);
-    addBackgroundHighlight(greenButton);
-    playGame();
-  };
-  if (clickedButton.is(redButton)) {
-    playerMoves.push(1);
-    playSound(redButton);
-    addBackgroundHighlight(redButton);
-    playGame();
-  };
-  if (clickedButton.is(yellowButton)) {
-    playerMoves.push(2);
-    playSound(yellowButton);
-    addBackgroundHighlight(yellowButton);
-    playGame();
-  };
-  if (clickedButton.is(blueButton)) {
-    playerMoves.push(3);
-    playSound(blueButton);
-    addBackgroundHighlight(blueButton);
-    playGame();
-  };
-});
-
 function playerTurn() {
   playerMoves.length = 0;
 }
@@ -127,9 +175,9 @@ function movesAreSame(computerMoves, playerMoves) {
 }
 
 function updateScore() {
-  if (levelCounter > highScore) {
+  if (levelCounter - 1 > highScore) {
     newHighScore = true;
-    highScore = levelCounter;
+    highScore = levelCounter - 1;
     localStorage.setItem('score', JSON.stringify(highScore));
   } else {
     newHighScore = false;
@@ -150,6 +198,38 @@ function updateLevel() {
   title.text(`Level ${levelCounter}`);
 }
 
+function resetGame() {
+  levelCounter = 1;
+  computerMoves.length = 0;
+  playerMoves.length = 0;
+  title.text(`Level ${levelCounter}`);
+  hideScore();
+}
+
+function restartGameSetup() {
+  if (window.matchMedia("(max-width: 900px)").matches) {
+    displayTouchScreenText('Restart');
+    $(document).on('touchstart', e => {
+      if (!modal[0].open && e.target !== $('.fa-check').get(0) && e.target !== howToButton.get(0)) {
+        e.preventDefault()
+        updateLevel();
+        resetGame();
+        computerTurn();
+        removeEventListener(document);
+      }
+    });
+  } else {
+    title.text('Press Any Key to Restart');
+    $(document).on('keydown', () => {
+      updateLevel();
+      resetGame();
+      computerTurn();
+      removeEventListener(document);
+      isClickable = true;
+    })
+  }
+}
+
 function brightenButton(button) {
   buttons.forEach(btn => btn.removeClass('brighten'));
   button.addClass('brighten');
@@ -166,47 +246,6 @@ function addBackgroundHighlight(button) {
   setTimeout(() => {
     button.removeClass('highlight');
   }, 150);
-}
-
-function setupEventListeners() {
-  $(document).off('touchstart keydown');
-
-  $(document).on('touchstart', () => {
-    $('body').addClass('no-hover');
-  });
-
-  $(document).on('keydown', e => {
-    if (e.key === 'a' && levelCounter === 1) {
-      isClickable = true;
-      removeEventListener(document);
-      resetGame();
-      computerTurn();
-    }
-  });
-
-  $(document).on('touchstart', e => {
-    e.preventDefault();
-    if (!modal[0].open && e.target !== tickButton.get(0) && e.target !== howToButton.get(0)) {
-      e.preventDefault()
-      updateLevel();
-      resetGame();
-      computerTurn();
-      removeEventListener(document);
-    }
-  });
-
-  tickButton.on('click', () => {
-    modal[0].close();
-  });
-
-  $(howToButton).on('click', () => {
-    modal[0].show();
-  })
-}
-
-function removeEventListener(element) {
-  $(element).off('keydown');
-  $(element).off('touchstart');
 }
 
 function textForTouchScreensOnPageLoad() {
@@ -254,46 +293,3 @@ function playSound(type) {
       break;
   }
 }
-
-function resetGame() {
-  levelCounter = 1;
-  computerMoves.length = 0;
-  playerMoves.length = 0;
-  title.text(`Level ${levelCounter}`);
-  hideScore();
-}
-
-function restartGameSetup() {
-  if (window.matchMedia("(max-width: 900px)").matches) {
-    displayTouchScreenText('Restart');
-    $(document).on('touchstart', e => {
-      if (!modal[0].open && e.target !== $('.fa-check').get(0) && e.target !== howToButton.get(0)) {
-        e.preventDefault()
-        updateLevel();
-        resetGame();
-        computerTurn();
-        removeEventListener(document);
-      }
-    });
-  } else {
-    title.text('Press Any Key to Restart');
-    $(document).on('keydown', () => {
-      updateLevel();
-      resetGame();
-      computerTurn();
-      removeEventListener(document);
-      isClickable = true;
-    })
-  }
-}
-
-function ifNewGame() {
-  if (highScore === 1) {
-    modal[0].showModal();
-  }
-}
-
-// Fix score display issue when game begins
-// Fix animation issues on touch devices
-
-// Simplify code - Ask ChatGPT of what can be improved upon and further use of jQuery
