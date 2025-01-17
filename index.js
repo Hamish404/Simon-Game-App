@@ -68,6 +68,7 @@ function playGame() {
 }
 
 function computerTurn() {
+  hideScore();
   setTimeout(() => {
     const result = Math.floor(Math.random() * 4);
     playSound(buttons[result]);
@@ -75,7 +76,7 @@ function computerTurn() {
     setTimeout(() => {
       buttons[result].fadeOut(100);
       buttons[result].fadeIn(100);
-    }, 100);
+    }, 200);
     computerMoves.push(result);
     isClickable = true;
   }, 500)
@@ -292,7 +293,7 @@ function ifNewGame() {
   }
 }
 
-// issue with high score display on non high score iterations
-// Question mark screen enables gameplay when open and clicked, but not when first opened
+// Fix score display issue when game begins
+// Fix animation issues on touch devices
 
 // Simplify code - Ask ChatGPT of what can be improved upon and further use of jQuery
